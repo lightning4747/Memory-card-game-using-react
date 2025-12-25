@@ -11,6 +11,8 @@ function App() {
     const [cards,setCards] = useState([])
     const [flippedCards,setFlippedCards] = useState([]) //hold only two card
     const [matchedCards,setMacthCards] = useState([]) 
+    const [scores, setScores] = useState(0)
+    const [moves, setMoves] = useState(0)
 
     const initializeGame = ()=> {
       //need to add the shuffle logic
@@ -70,6 +72,8 @@ function App() {
         }));
         setFlippedCards([]);
       },500);
+
+      setScores((prev) => prev+100)
         
       }
 
@@ -87,11 +91,12 @@ function App() {
         
       }
     }
+    setMoves((prev) => prev +1)
     };
 
   return (
     <div className="app">
-      <GamerHeader score={3} moves={10}/>
+      <GamerHeader score={scores} moves={moves}/>
       <div className="cards-grid">
         {
           cards.map((card, index)=> (
