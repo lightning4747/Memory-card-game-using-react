@@ -1,12 +1,11 @@
-
-
+import { GamerHeader } from "./components/GameHeader"
 
 function App() {
 
   return (
-    <>
-    Hello world!!
-    </>
+    <div className="app">
+      <GamerHeader score={3} moves={10}/>
+    </div>
   )
 }
 
