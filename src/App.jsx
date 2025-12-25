@@ -10,7 +10,8 @@ function App() {
 
     const [cards,setCards] = useState([])
     const [flippedCards,setFlippedCards] = useState([]) //hold only two card
-    
+    const [matchedCards,setMacthCards] = useState([]) 
+
     const initializeGame = ()=> {
       //need to add the shuffle logic
       
@@ -56,23 +57,33 @@ function App() {
       const firstCard = cards[flippedCards[0]];
       console.log(firstCard);
       if(firstCard.value === card.value) { //previous and the current are the same?
-        alert("macth")
-      }
-
-      else {
-
         setTimeout(()=> {
-          const flippedbackCards = newCards.map((c)=> {
-          if(newFlippedCards.includes(card.id) || c.id === card.id) {
-            return {...c, isFlipped: false};
+        setMacthCards((prev) => [...prev, firstCard.id, card.id]);
+        
+        setCards( (prev) => prev.map((c)=> {
+          if(c.id === card.id || c.id === firstCard.id) {
+            return {...c, isMatched: true};
           }
           else {
             return c;
           }
-        });
-        setCards(flippedbackCards);
+        }));
         setFlippedCards([]);
-        },1000)
+      },500);
+        
+      }
+
+      else {
+      setTimeout(() => {
+        setCards(prev =>
+          prev.map(c =>
+            newFlippedCards.includes(c.id)
+              ? { ...c, isFlipped: false }
+              : c
+          )
+        );
+        setFlippedCards([]);
+      }, 1000);
         
       }
     }
