@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "./components/Card";
 import { GamerHeader } from "./components/GameHeader"
+import { WinMessage } from "./components/winmessage";
 
 function App() {
   const cardValue = [
@@ -14,10 +15,20 @@ function App() {
     const [scores, setScores] = useState(0)
     const [moves, setMoves] = useState(0)
 
+    const shuffileArray = (array) => {
+      const shuffle = [...array];
+      for(let i = shuffle.length - 1; i>0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffle[i], shuffle[j]] = [shuffle[j],shuffle[i]];
+      }
+      return shuffle
+    }
+
+    
+
     const initializeGame = ()=> {
-      //need to add the shuffle logic
-      
-      const finalCards = cardValue.map((value,index)=> (
+      const shuffled = shuffileArray(cardValue);
+      const finalCards = shuffled.map((value,index)=> (
         {
           id: index,
           value,
@@ -27,6 +38,10 @@ function App() {
       ));
 
       setCards(finalCards);
+      setFlippedCards([])
+      setMacthCards([])
+      setMoves(0)
+      setScores(0)
     };
 
     useEffect(()=> {
@@ -34,7 +49,7 @@ function App() {
     },[]);
 
     const handleCardClick = (card) => {
-      if( card.isFlipped || card.isMatched) {
+      if( card.isFlipped || card.isMatched || flippedCards.length ==2) {
         return;
       }
 
@@ -94,9 +109,13 @@ function App() {
     setMoves((prev) => prev +1)
     };
 
+    const isGameCompleted = matchedCards.length === cardValue.length;
+
   return (
     <div className="app">
-      <GamerHeader score={scores} moves={moves}/>
+      <GamerHeader score={scores} moves={moves} onReset={initializeGame}/>
+      {isGameCompleted &&   <WinMessage moves ={moves}/>}
+
       <div className="cards-grid">
         {
           cards.map((card, index)=> (
