@@ -3,7 +3,7 @@ import React from 'react';
 export const GameHeader = ({ score, moves, onReset }) => {
   return (
     <header className="game-header">
-      <h1>Neon Memory</h1>
+      <h1>Memory Card</h1>
       
       <div className="stats">
         <div className="stat-item">

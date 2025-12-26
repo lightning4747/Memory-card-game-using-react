@@ -19,13 +19,15 @@
 body {
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--bg-dark);
-  min-height: 100vh;
+  /* Ensure body is exactly viewport size */
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 10px; /* Small padding to keep elements off edge */
   color: var(--text-main);
-  overflow: hidden; /* Prevent scrollbars from ambient lights */
+  overflow: hidden; /* Prevent any scrollbars */
   position: relative;
 }
 
@@ -72,7 +74,7 @@ body::after {
 
 #root {
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   z-index: 1;
 }
 
@@ -80,7 +82,10 @@ body::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 15px; /* Compact gap */
+  height: 100%;
+  width: 100%;
+  justify-content: center;
 }
 
 /* --- Header & Stats --- */
@@ -88,19 +93,16 @@ body::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  /* Glassmorphism Effect */
+  gap: 10px; /* Reduced gap */
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 30px 40px;
-  border-radius: 24px;
+  padding: 10px 20px; /* Compact padding */
+  border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 650px;
+  width: 90%; /* Matches grid width roughly */
+  max-width: min(90vw, 60vh); /* Matches grid max logic */
   border: 1px solid var(--glass-border);
-  position: relative;
-  overflow: hidden;
 }
 
 /* Subtle glowing border animation */
@@ -113,18 +115,19 @@ body::after {
 }
 
 .game-header h1 {
-  font-size: 2.5rem;
+  font-size: 1.5rem; /* Responsive size */
   background: linear-gradient(135deg, #fff 30%, var(--secondary-glow));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  margin: 0;
   text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
 }
 
 .stats {
   display: flex;
-  gap: 50px;
+  gap: 30px; /* Tightened stats gap */
   justify-content: center;
   width: 100%;
 }
@@ -133,21 +136,21 @@ body::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .stat-label {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
 }
 
 .stat-value {
-  font-size: 2.5rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  font-family: monospace; /* Tech feel */
+  font-family: monospace;
   color: var(--text-main);
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   transition: color 0.3s;
@@ -163,12 +166,12 @@ body::after {
   background: linear-gradient(135deg, var(--primary-glow), var(--accent-glow));
   color: white;
   border: none;
-  padding: 14px 40px;
-  font-size: 1rem;
+  padding: 8px 20px; /* Smaller button */
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
@@ -185,7 +188,7 @@ body::after {
 }
 
 .reset-btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
 }
 
@@ -197,52 +200,26 @@ body::after {
   transform: translateY(1px);
 }
 
-/* --- Win Message --- */
-.win-message {
-  background: rgba(5, 5, 5, 0.9);
-  padding: 40px 60px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 0 50px rgba(6, 182, 212, 0.2);
-  border: 1px solid var(--secondary-glow);
-  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 10;
-}
-
-@keyframes popIn {
-  0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.win-message h2 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  background: linear-gradient(to right, var(--secondary-glow), var(--accent-glow));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.win-message p {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-}
-
 /* --- Grid --- */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  max-width: 640px;
-  width: 100%;
-  perspective: 1000px; /* Essential for 3D flip */
+  gap: 10px; /* Smaller gap to fit more content */
+  width: 90%; /* Default width */
+  
+  /* THE FIX: Limit size to 90% of screen width OR 60% of screen height. 
+     Since it's a square (aspect-ratio: 1), if we limit the height to 60vh, 
+     the width automatically becomes 60vh. This guarantees it fits vertically. */
+  max-width: min(90vw, 60vh); 
+  margin: 0 auto;
+  perspective: 1000px;
 }
 
-/* --- Card Mechanics (True 3D Flip) --- */
+/* --- Card Mechanics --- */
 .card {
   aspect-ratio: 1;
   position: relative;
   cursor: pointer;
-  /* We don't rotate the card container, we rotate the faces to preserve-3d logic without changing HTML structure */
   transform-style: preserve-3d;
 }
 
@@ -254,32 +231,21 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 12px; /* Slightly smaller radius */
   backface-visibility: hidden;
   transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 
-  Logic:
-  Front is the cover (starts visible, 0deg).
-  Back is the content (starts hidden, 180deg).
-  
-  On Flipped:
-  Front rotates to -180deg (hides).
-  Back rotates to 0deg (shows).
-*/
-
-/* The Cover (Question Mark or Pattern) */
+/* The Cover */
 .card-front {
   background: linear-gradient(145deg, #1e1e24, #121216);
-  font-size: 2.5rem;
+  font-size: 1.5rem; /* Smaller question mark */
   border: 1px solid var(--glass-border);
   color: rgba(255, 255, 255, 0.1);
   transform: rotateY(0deg);
 }
 
-/* Add a "Tech" pattern to the card back (cover) */
 .card-front::after {
   content: '?';
   font-weight: 900;
@@ -288,24 +254,24 @@ body::after {
   -webkit-text-fill-color: transparent;
 }
 
-/* The Content (The Emoji/Icon) */
+/* The Content */
 .card-back {
   background: linear-gradient(145deg, #2a2a35, #1a1a22);
-  font-size: 3.5rem;
+  font-size: 2.5rem; /* Adjusted emoji size */
   transform: rotateY(180deg);
   border: 1px solid var(--primary-glow);
   box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.1);
 }
 
-/* Hover Effects on non-flipped cards */
+/* Hover Effects */
 .card:hover:not(.matched):not(.flipped) .card-front {
-  transform: rotateY(0deg) scale(1.05);
+  transform: rotateY(0deg) scale(1.02); /* Slight scale */
   box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
   border-color: var(--secondary-glow);
 }
 
 .card:active:not(.matched) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 /* --- Flip State --- */
@@ -317,14 +283,14 @@ body::after {
   transform: rotateY(0deg);
 }
 
-/* --- Matched State (Victory Animation) --- */
+/* --- Matched State --- */
 .card.matched {
   pointer-events: none;
   animation: pulseMatch 0.5s ease-out forwards;
 }
 
 .card.matched .card-back {
-  background: rgba(34, 211, 238, 0.1); /* Cyan tint */
+  background: rgba(34, 211, 238, 0.1);
   border: 2px solid var(--secondary-glow);
   box-shadow: 0 0 30px var(--secondary-glow), inset 0 0 20px rgba(34, 211, 238, 0.2);
   color: #fff;
@@ -336,94 +302,66 @@ body::after {
   100% { transform: scale(1); }
 }
 
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-  .game-header h1 {
-    font-size: 2rem;
-  }
-  
-  .cards-grid {
-    gap: 15px;
-  }
-
-  .card-front, .card-back {
-    font-size: 2rem;
-  }
-  
-  .card-front::after {
-    font-size: 2rem;
-  }
-
-  .stats {
-    gap: 30px;
-  }
-
-  .stat-value {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 10px;
-    align-items: flex-start; /* Prevent overlap on small screens */
-    padding-top: 40px;
-  }
-
-  .game-header {
-    padding: 20px;
-    width: 100%;
-  }
-
-  .game-header h1 {
-    font-size: 1.6rem;
-  }
-
-  .cards-grid {
-    gap: 10px;
-    max-width: 100%;
-  }
-
-  .card-front::after {
-    font-size: 1.5rem;
-  }
-  
-  .card-back {
-    font-size: 2.2rem;
-  }
-  
-  .reset-btn {
-    padding: 12px 24px;
-    font-size: 0.9rem;
-  }
-}
-
-/* The Container */
+/* --- Win Message Overlay --- */
 .win-message {
-  position: fixed; /* or absolute depending on layout */
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(5, 5, 5, 0.95);
-  padding: 40px 60px;
+  padding: 30px 50px;
   border-radius: 20px;
   text-align: center;
   border: 1px solid var(--secondary-glow);
   box-shadow: 0 0 50px rgba(6, 182, 212, 0.2);
-  z-index: 100; /* Sit on top of everything */
+  z-index: 100;
+  max-width: 90%;
+  width: auto;
   
-  /* This line triggers the animation when the component loads */
   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* The Animation Keyframes */
 @keyframes popIn {
-  0% { 
-    opacity: 0; 
-    transform: translate(-50%, -50%) scale(0.8); 
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.win-message h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, var(--secondary-glow), var(--accent-glow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.win-message p {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* --- Mobile Adjustments --- */
+@media (max-width: 480px) {
+  .cards-grid {
+    /* On phones, use slightly more of the width, but keep height constraint */
+    max-width: min(95vw, 65vh); 
   }
-  100% { 
-    opacity: 1; 
-    transform: translate(-50%, -50%) scale(1); 
+
+  .game-header {
+    padding: 8px 15px;
+    gap: 5px;
+  }
+
+  .game-header h1 {
+    font-size: 1.1rem;
+  }
+
+  .card-back {
+    font-size: 1.8rem; /* Smaller emojis on small screens */
+  }
+  
+  .reset-btn {
+    padding: 6px 15px;
+    font-size: 0.7rem;
   }
 }
